@@ -15,13 +15,13 @@ jobs:
       matrix:
         os:
           - fedora
-          # - centos
-          # - opensuse
-          # - ubuntu
-          # - debian
-          # - scan
+          - centos
+          - opensuse
+          - ubuntu
+          - debian
+        flavor:
           - test
-
+          - scan
     steps:
       - name: Check out the repo
         uses: actions/checkout@v2
@@ -33,7 +33,7 @@ jobs:
           username: ${{ secrets.QUAY_USERNAME }}
           password: ${{ secrets.QUAY_TOKEN }}
 
-      - name: Push to quay.io
+      - name: Push base images to quay.io
         uses: docker/build-push-action@v2
         with:
           context: .
@@ -41,3 +41,12 @@ jobs:
           no-cache: true
           push: true
           tags: quay.io/389ds/ci-images:${{ matrix.os }}
+
+      - name: Push flavored images to quay.io
+        uses: docker/build-push-action@v2
+        with:
+          context: .
+          file: ./Containerfile.${{ matrix.flavor }}
+          no-cache: true
+          push: true
+          tags: quay.io/389ds/ci-images:${{ matrix.flavor }}
