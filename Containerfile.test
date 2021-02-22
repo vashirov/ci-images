@@ -3,7 +3,7 @@ FROM quay.io/389ds/ci-images:fedora
 RUN dnf install -y bzip2 bind-utils coreutils-common \
 cracklib-dicts hostname openssl procps-ng psmisc \
 python3-pytest npm nodejs rust cargo rpm-build \
-libatomic lld libasan libubsan
+libatomic lld libasan libubsan python3-pip
 
 RUN pip3 install pytest-html
 
